@@ -1,5 +1,28 @@
 
-const gameBoard = function (){
+function Player(player1 ="playerOne", player2 = "playerTwo"){
+    player = [
+        this.player1 = {
+            name: player1,
+            token: "O"
+        },
+        this.player2 = {
+            name: player2,
+            token: "X"
+        }
+    ]
+
+    this.getPlayer = () => player
+
+    let activePlayer = player[0]
+
+    this.switchPlayer = () => {
+        activePlayer = activePlayer === player[0]? player[1] : player[0]
+    }
+
+    this.getActivePlayer = () => activePlayer
+}
+
+const gameBoard = (function (){
     let board = []
 
     const getBoardState = () => board
@@ -7,9 +30,10 @@ const gameBoard = function (){
     function markBoard (x,y,token){
         if((x>=0 && x<=2 && y>=0 && y<=2) && board[x][y] === ''){
             board[x][y] = token
+            return true
         }
 
-        return 
+        return false;
     }
 
     const resetBoard = function (){
@@ -36,9 +60,10 @@ const gameBoard = function (){
 
     resetBoard();
     return {
+        resetBoard,
         getBoardState,
-        markBoard
+        markBoard,
+        checkWin
     }
-}
-
-const game = gameBoard()
+})();
+const game = gameController()
