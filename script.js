@@ -1,5 +1,5 @@
 
-function Player(player1 ="playerOne", player2 = "playerTwo"){
+function Player(player1 = "playerOne", player2 = "playerTwo"){
     player = [
         this.player1 = {
             name: player1,
@@ -17,7 +17,6 @@ function Player(player1 ="playerOne", player2 = "playerTwo"){
         activePlayer = activePlayer === player[0]? player[1] : player[0]
         return true
     }
-
     this.getActivePlayer = () => activePlayer
 }
 
@@ -66,13 +65,26 @@ const gameBoard = (function (){
     }
 })();
 
+
+const UserInput = (() => {
+    const player1 = prompt("Enter your name player1: ")
+    const player2 = prompt("Enter your name player2: ")
+
+    return {
+        player1,
+        player2
+    }
+})()
+
 const gameController = (function(){
 
     //generating gameboard
     gameBoard
 
+    const playerInformation = UserInput
+
     //Creating player object
-    let player = new Player()
+    let player = new Player(playerInformation.player1, playerInformation.player2)
 
     const playGame = (x, y) => {
         const markedResult = gameBoard.markBoard(x, y, player.getActivePlayer().token)
@@ -108,9 +120,9 @@ const ticTackToeDisplay = function(){
             container.appendChild(row)
         } 
     }
-
-
     generateBoard()
+    const playerInformation = UserInput
+    gameController.player.getActivePlayer().name
 
     const cell = document.querySelectorAll(".cell")
     container.addEventListener('click', (e) => {
