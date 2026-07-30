@@ -80,6 +80,8 @@ const gameController = (function(){
 
         if(markedResult === true){
             player.switchPlayer()
+        } else {
+            alert("Hero banta hai bhen k lund!")
         }
     }
     
