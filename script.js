@@ -11,12 +11,11 @@ function Player(player1 ="playerOne", player2 = "playerTwo"){
         }
     ]
 
-    this.getPlayer = () => player
-
     let activePlayer = player[0]
 
     this.switchPlayer = () => {
         activePlayer = activePlayer === player[0]? player[1] : player[0]
+        return true
     }
 
     this.getActivePlayer = () => activePlayer
@@ -25,16 +24,16 @@ function Player(player1 ="playerOne", player2 = "playerTwo"){
 const gameBoard = (function (){
     let board = []
 
-    const getBoardState = () => board
-
     function markBoard (x,y,token){
         if((x>=0 && x<=2 && y>=0 && y<=2) && board[x][y] === ''){
             board[x][y] = token
             return true
         }
 
-        return false;
+        return false
     }
+
+    const getBoardState = () => board
 
     const resetBoard = function (){
         board = [
@@ -47,7 +46,7 @@ const gameBoard = (function (){
 
     const checkWin = function(token){
         for(let i = 0; i<3; i++){
-            if((board[0][i] === token && board[1][i] === token && board[2][0] === token) ||
+            if((board[0][i] === token && board[1][i] === token && board[2][i] === token) ||
             (board[i][0] === token && board[i][1] === token && board[i][2] === token) ||
             (board[0][0] === token && board[1][1] === token && board[2][2] === token) ||
             (board[0][2] === token && board[1][1] === token && board[2][0] === token)) {
@@ -58,7 +57,7 @@ const gameBoard = (function (){
         return false
     }
 
-    resetBoard();
+    resetBoard()
     return {
         resetBoard,
         getBoardState,
@@ -67,7 +66,7 @@ const gameBoard = (function (){
     }
 })();
 
-const gameController = function(){
+const gameController = (function(){
 
     //generating gameboard
     gameBoard
@@ -79,22 +78,70 @@ const gameController = function(){
         const markedResult = gameBoard.markBoard(x, y, player.getActivePlayer().token)
         console.log(gameBoard.getBoardState())
 
-        const checkWiner = gameBoard.checkWin(player.getActivePlayer().token)
-        console.log(checkWiner)
-
-        if( markedResult === true){
-            player.switchPlayer();
-        }
-
-        if(checkWiner === true){
-            console.log(`${player.getActivePlayer().name} is the winner.`)
-            gameBoard.resetBoard()
+        if(markedResult === true){
+            player.switchPlayer()
         }
     }
     
     return {
+        player,
         playGame
     }
+})();
+
+const ticTackToeDisplay = function(){
+    const container = document.querySelector(".container")
+
+    const generateBoard = () => {
+        for(let i = 0; i<3; i++){
+            const row = document.createElement("div")
+            row.classList.add(`row`)
+            for(let j = 0; j<3; j++){
+                const cell = document.createElement("button")
+                cell.classList.add(`cell`)
+                cell.dataset.row = `${i}`
+                cell.dataset.column = `${j}`
+                row.appendChild(cell)
+            }
+            container.appendChild(row)
+        } 
+    }
+
+
+    generateBoard()
+
+    const cell = document.querySelectorAll(".cell")
+    container.addEventListener('click', (e) => {
+        let row = e.target.dataset.row
+        let column = e.target.dataset.column
+
+        gameController.playGame(row, column)
+        board = gameBoard.getBoardState()
+        e.target.innerText = board[row][column]
+
+        const checkWin = gameBoard.checkWin(board[row][column])
+
+        if(checkWin === true){
+            setTimeout(() => {
+                alert(`${gameController.player.getActivePlayer().name} is the winner.`) 
+                cell.forEach((element) => {
+                element.innerText = ''
+                })
+                gameBoard.resetBoard()
+            }, 500)
+            
+        }
+    })
+
+    const resetBtn = document.querySelector(".resetBoard")
+
+    resetBtn.addEventListener('click', () => {
+        alert("Haaa laudu.")
+        gameBoard.resetBoard()
+        cell.forEach((element) => {
+            element.innerText = ''
+        });
+    })
 }
 
-const game = gameController()
+ticTackToeDisplay()
