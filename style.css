@@ -47,3 +47,14 @@ body {
     border-radius: 7px;
     background-color: #D7FF00;
 }
+
+.information{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 20px;
+}
+
+.information .turn{
+    font-size: 1.2rem;
+}

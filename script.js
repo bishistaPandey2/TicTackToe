@@ -67,8 +67,8 @@ const gameBoard = (function (){
 
 
 const UserInput = (() => {
-    const player1 = prompt("Enter your name player1: ")
-    const player2 = prompt("Enter your name player2: ")
+    const player1 = prompt("Enter your name player1: ") || "playerOne"
+    const player2 = prompt("Enter your name player2: ") || "playerTwo"
 
     return {
         player1,
@@ -82,7 +82,6 @@ const gameController = (function(){
     gameBoard
 
     const playerInformation = UserInput
-
     //Creating player object
     let player = new Player(playerInformation.player1, playerInformation.player2)
 
@@ -122,7 +121,6 @@ const ticTackToeDisplay = function(){
     }
     generateBoard()
     const playerInformation = UserInput
-    gameController.player.getActivePlayer().name
 
     const cell = document.querySelectorAll(".cell")
     container.addEventListener('click', (e) => {
