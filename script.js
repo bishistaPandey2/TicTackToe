@@ -66,4 +66,35 @@ const gameBoard = (function (){
         checkWin
     }
 })();
+
+const gameController = function(){
+
+    //generating gameboard
+    gameBoard
+
+    //Creating player object
+    let player = new Player()
+
+    const playGame = (x, y) => {
+        const markedResult = gameBoard.markBoard(x, y, player.getActivePlayer().token)
+        console.log(gameBoard.getBoardState())
+
+        const checkWiner = gameBoard.checkWin(player.getActivePlayer().token)
+        console.log(checkWiner)
+
+        if( markedResult === true){
+            player.switchPlayer();
+        }
+
+        if(checkWiner === true){
+            console.log(`${player.getActivePlayer().name} is the winner.`)
+            gameBoard.resetBoard()
+        }
+    }
+    
+    return {
+        playGame
+    }
+}
+
 const game = gameController()
